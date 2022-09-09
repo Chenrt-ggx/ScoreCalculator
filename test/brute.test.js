@@ -62,54 +62,15 @@ test('check equal not zero', () => {
     );
 });
 
-function checkPlain(courseCount, selectCount) {
-    const courses = Array(courseCount)
+function abstractCheck(courseCount, selectCount, includeMix) {
+    const courses = Array(includeMix ? courseCount * 2 : courseCount)
         .fill(1)
         .map((item, index) => {
             return {
                 name: 'course ' + (item + index),
                 score: generateScore(),
                 credits: 2,
-                optional: true
-            };
-        });
-    const checker = new Set(
-        courses
-            .map((item, index) => {
-                return {
-                    ...item,
-                    index: index
-                };
-            })
-            .sort((lhs, rhs) => {
-                if (rhs['score'] === lhs['score']) {
-                    return lhs['index'] - rhs['index'];
-                } else {
-                    return rhs['score'] - lhs['score'];
-                }
-            })
-            .slice(0, selectCount)
-            .map((i) => i['name'])
-    );
-    expect(brute(courses, selectCount)).toEqual(
-        courses.map((item) => {
-            return {
-                ...item,
-                selected: checker.has(item['name'])
-            };
-        })
-    );
-}
-
-function checkMix(courseCount, selectCount) {
-    const courses = Array(courseCount * 2)
-        .fill(1)
-        .map((item, index) => {
-            return {
-                name: 'course ' + (item + index),
-                score: generateScore(),
-                credits: 2,
-                optional: item & (1 !== 0)
+                optional: !includeMix || (index & 1) !== 0
             };
         });
     const checker = new Set(
@@ -135,40 +96,40 @@ function checkMix(courseCount, selectCount) {
         courses.map((item) => {
             return {
                 ...item,
-                selected: checker.has(item['name'])
+                selected: !item['optional'] || checker.has(item['name'])
             };
         })
     );
 }
 
 test('check plain zero', () => {
-    checkPlain(15, 0);
+    abstractCheck(15, 0, false);
 });
 
 test('check plain alpha', () => {
-    checkPlain(15, 1);
+    abstractCheck(15, 1, false);
 });
 
 test('check plain beta', () => {
-    checkPlain(15, 8);
+    abstractCheck(15, 8, false);
 });
 
 test('check plain gamma', () => {
-    checkPlain(15, 14);
+    abstractCheck(15, 14, false);
 });
 
 test('check mix zero', () => {
-    checkMix(15, 0);
+    abstractCheck(15, 0, true);
 });
 
 test('check mix alpha', () => {
-    checkMix(15, 1);
+    abstractCheck(15, 1, true);
 });
 
 test('check mix beta', () => {
-    checkMix(15, 8);
+    abstractCheck(15, 8, true);
 });
 
 test('check mix gamma', () => {
-    checkMix(15, 14);
+    abstractCheck(15, 14, true);
 });
