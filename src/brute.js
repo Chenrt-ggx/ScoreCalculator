@@ -24,7 +24,9 @@ export default function (courses, selectNumber) {
         selected: null,
         final: 0
     };
-    if (selectNumber > info.selectable.length) {
+    if (selectNumber < 0) {
+        throw new RangeError('select number must not less than zero');
+    } else if (selectNumber > info.selectable.length) {
         throw new RangeError('selectable course not enough');
     } else if (selectNumber === info.selectable.length) {
         return courses.map((item) => {
