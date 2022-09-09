@@ -10,8 +10,6 @@
         "lint:check": "eslint .",
         "lint:fix": "eslint --fix ."
     },
-    "keywords": [],
-    "author": "",
     "devDependencies": {
         "@babel/core": "^7.19.0",
         "@babel/preset-env": "^7.19.0",
