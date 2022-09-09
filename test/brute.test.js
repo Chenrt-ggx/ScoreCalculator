@@ -15,25 +15,40 @@ function generateCredits() {
     return base[randInteger(0, base.length - 1)];
 }
 
-test('check exception zero', () => {
-    expect(() => {
-        brute([], 1);
-    }).toThrow('selectable course not enough');
-});
-
-test('check exception not zero', () => {
-    const courses = Array(9)
+function simpleGenerate(courseCount, selectCount) {
+    return Array(courseCount)
         .fill(1)
         .map((item, index) => {
             return {
                 name: 'course ' + (item + index),
                 score: generateScore(),
                 credits: generateCredits(),
-                optional: item + index >= 5
+                optional: index >= courseCount - selectCount
             };
         });
+}
+
+test('check exception zero alpha', () => {
     expect(() => {
-        brute(courses, 6);
+        brute([], -1);
+    }).toThrow('select number must not less than zero');
+});
+
+test('check exception zero beta', () => {
+    expect(() => {
+        brute([], 1);
+    }).toThrow('selectable course not enough');
+});
+
+test('check exception not zero alpha', () => {
+    expect(() => {
+        brute(simpleGenerate(9, 5), -1);
+    }).toThrow('select number must not less than zero');
+});
+
+test('check exception not zero beta', () => {
+    expect(() => {
+        brute(simpleGenerate(9, 5), 6);
     }).toThrow('selectable course not enough');
 });
 
@@ -42,16 +57,7 @@ test('check equal zero', () => {
 });
 
 test('check equal not zero', () => {
-    const courses = Array(9)
-        .fill(1)
-        .map((item, index) => {
-            return {
-                name: 'course ' + (item + index),
-                score: generateScore(),
-                credits: generateCredits(),
-                optional: item + index >= 5
-            };
-        });
+    const courses = simpleGenerate(9, 5);
     expect(brute(courses, 5)).toEqual(
         courses.map((item) => {
             return {
