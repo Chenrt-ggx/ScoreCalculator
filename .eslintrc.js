@@ -1,16 +1,16 @@
 module.exports = {
-    'root': true,
-    'env': {
-        'browser': true,
-        'amd': true,
-        'node': true
+    root: true,
+    env: {
+        es6: true,
+        node: true,
+        jest: true
     },
-    'extends': ['eslint:recommended', 'prettier'],
-    'parserOptions': {
-        'ecmaVersion': 12,
-        'sourceType': 'module'
+    extends: ['eslint:recommended', 'prettier'],
+    parserOptions: {
+        ecmaVersion: 12,
+        sourceType: 'module'
     },
-    'rules': {
+    rules: {
         'no-console': 'error'
     }
 };

@@ -4,7 +4,7 @@
     "description": "Score Calculator and General Professional Course Selector for BUAA Computer Science",
     "main": "index.js",
     "scripts": {
-        "test": "jest",
+        "test": "jest --coverage",
         "format:check": "prettier --check .",
         "format:write": "prettier --write .",
         "lint:check": "eslint .",
