@@ -4,12 +4,12 @@ function search(info, current, buf, level) {
         const scoreSum = buf.reduce((now, next) => now + next['score'] * next['credits'], info.score * info.credits);
         if (scoreSum / creditsSum > info.final) {
             info.final = scoreSum / creditsSum;
-            info.selected = buf.slice();
+            info.selected = buf.map((i) => i['name']);
         }
     } else {
         for (let i = current; i < info.selectable.length; ++i) {
-            buf.push(info.selectable[i]['name']);
-            search(info, current + 1, buf, level - 1);
+            buf.push(info.selectable[i]);
+            search(info, i + 1, buf, level - 1);
             buf.pop();
         }
     }
@@ -27,14 +27,20 @@ export default function (courses, selectNumber) {
     if (selectNumber > info.selectable.length) {
         throw new RangeError('selectable course not enough');
     } else if (selectNumber === info.selectable.length) {
-        return courses.map((i) => {
-            i['selected'] = true;
+        return courses.map((item) => {
+            return {
+                ...item,
+                selected: true
+            };
         });
     } else {
         search(info, 0, [], selectNumber);
         const checker = new Set(info.selected);
-        return courses.map((i) => {
-            i['selected'] = !i['optional'] || checker.has(i['name']);
+        return courses.map((item) => {
+            return {
+                ...item,
+                selected: !item['optional'] || checker.has(item['name'])
+            };
         });
     }
 }

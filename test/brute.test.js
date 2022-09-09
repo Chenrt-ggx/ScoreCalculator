@@ -52,13 +52,17 @@ test('check equal not zero', () => {
                 optional: item + index >= 5
             };
         });
-    const result = courses.map((i) => {
-        i['selected'] = true;
-    });
-    expect(brute(courses, 5)).toEqual(result);
+    expect(brute(courses, 5)).toEqual(
+        courses.map((item) => {
+            return {
+                ...item,
+                selected: true
+            };
+        })
+    );
 });
 
-function checkNormal(courseCount, selectCount) {
+function checkPlain(courseCount, selectCount) {
     const courses = Array(courseCount)
         .fill(1)
         .map((item, index) => {
@@ -71,7 +75,12 @@ function checkNormal(courseCount, selectCount) {
         });
     const checker = new Set(
         courses
-            .map((item, index) => (item['index'] = index))
+            .map((item, index) => {
+                return {
+                    ...item,
+                    index: index
+                };
+            })
             .sort((lhs, rhs) => {
                 if (rhs['score'] === lhs['score']) {
                     return lhs['index'] - rhs['index'];
@@ -82,24 +91,84 @@ function checkNormal(courseCount, selectCount) {
             .slice(0, selectCount)
             .map((i) => i['name'])
     );
-    const result = courses.map((i) => {
-        i['selected'] = checker.has(i['name']);
-    });
-    expect(brute(courses, selectCount)).toEqual(result);
+    expect(brute(courses, selectCount)).toEqual(
+        courses.map((item) => {
+            return {
+                ...item,
+                selected: checker.has(item['name'])
+            };
+        })
+    );
 }
 
-test('check normal zero', () => {
-    checkNormal(9, 0);
+function checkMix(courseCount, selectCount) {
+    const courses = Array(courseCount * 2)
+        .fill(1)
+        .map((item, index) => {
+            return {
+                name: 'course ' + (item + index),
+                score: generateScore(),
+                credits: 2,
+                optional: item & (1 !== 0)
+            };
+        });
+    const checker = new Set(
+        courses
+            .filter((i) => i['optional'])
+            .map((item, index) => {
+                return {
+                    ...item,
+                    index: index
+                };
+            })
+            .sort((lhs, rhs) => {
+                if (rhs['score'] === lhs['score']) {
+                    return lhs['index'] - rhs['index'];
+                } else {
+                    return rhs['score'] - lhs['score'];
+                }
+            })
+            .slice(0, selectCount)
+            .map((i) => i['name'])
+    );
+    expect(brute(courses, selectCount)).toEqual(
+        courses.map((item) => {
+            return {
+                ...item,
+                selected: checker.has(item['name'])
+            };
+        })
+    );
+}
+
+test('check plain zero', () => {
+    checkPlain(15, 0);
 });
 
-test('check normal alpha', () => {
-    checkNormal(9, 1);
+test('check plain alpha', () => {
+    checkPlain(15, 1);
 });
 
-test('check normal beta', () => {
-    checkNormal(9, 5);
+test('check plain beta', () => {
+    checkPlain(15, 8);
 });
 
-test('check normal gamma', () => {
-    checkNormal(9, 8);
+test('check plain gamma', () => {
+    checkPlain(15, 14);
+});
+
+test('check mix zero', () => {
+    checkMix(15, 0);
+});
+
+test('check mix alpha', () => {
+    checkMix(15, 1);
+});
+
+test('check mix beta', () => {
+    checkMix(15, 8);
+});
+
+test('check mix gamma', () => {
+    checkMix(15, 14);
 });
