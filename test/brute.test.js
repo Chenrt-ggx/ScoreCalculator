@@ -139,3 +139,23 @@ test('check mix beta', () => {
 test('check mix gamma', () => {
     abstractCheck(15, 14, true);
 });
+
+test('check additional', () => {
+    const courses = [
+        { name: 'course 1', score: 90, credits: 30, optional: false },
+        { name: 'course 2', score: 96, credits: 4, optional: true },
+        { name: 'course 3', score: 96, credits: 4, optional: true },
+        { name: 'course 4', score: 97, credits: 4, optional: true },
+        { name: 'course 5', score: 97, credits: 4, optional: true },
+        { name: 'course 6', score: 98, credits: 4, optional: true },
+        { name: 'course 7', score: 99, credits: 1, optional: true }
+    ];
+    expect(brute(courses, 5)).toEqual(
+        courses.map((item) => {
+            return {
+                ...item,
+                selected: !item['optional'] || item['score'] !== 99
+            };
+        })
+    );
+});
