@@ -1,7 +1,7 @@
 function search(info, current, buf, level) {
     if (level === 0) {
         const creditsSum = buf.reduce((now, next) => now + next['credits'], info.credits);
-        const scoreSum = buf.reduce((now, next) => now + next['score'] * next['credits'], info.score * info.credits);
+        const scoreSum = buf.reduce((now, next) => now + next['score'] * next['credits'], info.scoreSum);
         if (scoreSum / creditsSum > info.final) {
             info.final = scoreSum / creditsSum;
             info.selected = buf.map((i) => i['name']);
@@ -18,7 +18,7 @@ function search(info, current, buf, level) {
 export default function (courses, selectNumber) {
     const base = courses.filter((i) => !i['optional']);
     const info = {
-        score: base.reduce((now, next) => now + next['score'], 0),
+        scoreSum: base.reduce((now, next) => now + next['score'] * next['credits'], 0),
         credits: base.reduce((now, next) => now + next['credits'], 0),
         selectable: courses.filter((i) => i['optional']),
         selected: null,

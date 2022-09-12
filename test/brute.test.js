@@ -159,3 +159,24 @@ test('check additional', () => {
         })
     );
 });
+
+test('check additional beta', () => {
+    const courses = [
+        { name: 'course 1', score: 99, credits: 6, optional: false },
+        { name: 'course 2', score: 99, credits: 6, optional: false },
+        { name: 'course 3', score: 98, credits: 1.5, optional: true },
+        { name: 'course 4', score: 98, credits: 2, optional: true },
+        { name: 'course 5', score: 97, credits: 2, optional: true },
+        { name: 'course 6', score: 100, credits: 2, optional: true },
+        { name: 'course 7', score: 96, credits: 2, optional: true },
+        { name: 'course 8', score: 82, credits: 1.5, optional: true }
+    ];
+    expect(brute(courses, 5)).toEqual(
+        courses.map((item) => {
+            return {
+                ...item,
+                selected: !item['optional'] || item['score'] !== 82
+            };
+        })
+    );
+});
