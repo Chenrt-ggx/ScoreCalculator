@@ -1,3 +1,5 @@
+import preHandle from './common';
+
 function search(info, current, buf, level) {
   if (level === 0) {
     const creditsSum = buf.reduce((now, next) => now + next['credits'], info.credits);
@@ -16,26 +18,12 @@ function search(info, current, buf, level) {
 }
 
 export default function (courses, selectNumber) {
-  const base = courses.filter((i) => !i['optional']);
-  const info = {
-    scoreSum: base.reduce((now, next) => now + next['score'] * next['credits'], 0),
-    credits: base.reduce((now, next) => now + next['credits'], 0),
-    selectable: courses.filter((i) => i['optional']),
-    selected: null,
-    final: 0
-  };
-  if (selectNumber < 0) {
-    throw new RangeError('select number must not less than zero');
-  } else if (selectNumber > info.selectable.length) {
-    throw new RangeError('selectable course not enough');
-  } else if (selectNumber === info.selectable.length) {
-    return courses.map((item) => {
-      return {
-        ...item,
-        selected: true
-      };
-    });
+  const info = preHandle(courses, selectNumber);
+  if (info instanceof Array) {
+    return info;
   } else {
+    info['selected'] = null;
+    info['final'] = 0;
     search(info, 0, [], selectNumber);
     const checker = new Set(info.selected);
     return courses.map((item) => {
