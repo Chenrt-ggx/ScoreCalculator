@@ -1,4 +1,4 @@
-import { randScore, randCredits } from './random';
+import { randCredits, randScore } from './random';
 
 export function simpleGenerate(courseCount, selectCount) {
   const courses = Array(courseCount)
@@ -20,7 +20,7 @@ export function simpleGenerate(courseCount, selectCount) {
   return { courses, result };
 }
 
-export function randomGenerate(courseCount, selectCount, includeMix) {
+export function ruledGenerate(courseCount, selectCount, includeMix) {
   const courses = Array(includeMix ? courseCount * 2 : courseCount)
     .fill(1)
     .map((item, index) => {
@@ -96,4 +96,17 @@ export function handmadeBeta() {
     };
   });
   return { courses, result };
+}
+
+export function randomGenerate(courseCount, includeMix) {
+  return Array(includeMix ? courseCount * 2 : courseCount)
+    .fill(1)
+    .map((item, index) => {
+      return {
+        name: 'course ' + (item + index),
+        score: randScore(),
+        credits: randCredits(),
+        optional: !includeMix || (index & 1) !== 0
+      };
+    });
 }

@@ -5,23 +5,25 @@ export default function (courses, selectNumber) {
   if (info instanceof Array) {
     return info;
   } else {
-    const selected = new Set();
-    for (let i = 0; i < courses.length; ++i) {
+    const unique = new Set();
+    for (let i = 0; i < selectNumber; ++i) {
       let max = -1,
-        name = '';
+        selected = null;
       info.selectable.forEach((item) => {
         const update = (info.scoreSum + item['score'] * item['credits']) / (info.credits + item['credits']);
-        if (!selected.has(item['name']) && update > max) {
+        if (!unique.has(item['name']) && update > max) {
           max = update;
-          name = item['name'];
+          selected = item;
         }
       });
-      selected.add(name);
+      unique.add(selected['name']);
+      info.scoreSum += selected['score'] * selected['credits'];
+      info.credits += selected['credits'];
     }
     return courses.map((item) => {
       return {
         ...item,
-        selected: !item['optional'] || selected.has(item['name'])
+        selected: !item['optional'] || unique.has(item['name'])
       };
     });
   }

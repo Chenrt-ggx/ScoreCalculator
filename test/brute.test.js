@@ -1,5 +1,5 @@
 import brute from '../src/brute';
-import { simpleGenerate, randomGenerate, handmadeAlpha, handmadeBeta } from '../utils/generator';
+import { simpleGenerate, ruledGenerate, handmadeAlpha, handmadeBeta } from '../utils/generator';
 
 test('check exception empty alpha', () => {
   expect(() => {
@@ -35,42 +35,42 @@ test('check equal not empty', () => {
 });
 
 test('check plain zero', () => {
-  const data = randomGenerate(15, 0, false);
+  const data = ruledGenerate(15, 0, false);
   expect(brute(data.courses)).toEqual(data.result);
 });
 
 test('check plain alpha', () => {
-  const data = randomGenerate(15, 1, false);
+  const data = ruledGenerate(15, 1, false);
   expect(brute(data.courses, 1)).toEqual(data.result);
 });
 
 test('check plain beta', () => {
-  const data = randomGenerate(15, 8, false);
+  const data = ruledGenerate(15, 8, false);
   expect(brute(data.courses, 8)).toEqual(data.result);
 });
 
 test('check plain gamma', () => {
-  const data = randomGenerate(15, 14, false);
+  const data = ruledGenerate(15, 14, false);
   expect(brute(data.courses, 14)).toEqual(data.result);
 });
 
 test('check mix zero', () => {
-  const data = randomGenerate(15, 0, true);
+  const data = ruledGenerate(15, 0, true);
   expect(brute(data.courses, 0)).toEqual(data.result);
 });
 
 test('check mix alpha', () => {
-  const data = randomGenerate(15, 1, true);
+  const data = ruledGenerate(15, 1, true);
   expect(brute(data.courses, 1)).toEqual(data.result);
 });
 
 test('check mix beta', () => {
-  const data = randomGenerate(15, 8, true);
+  const data = ruledGenerate(15, 8, true);
   expect(brute(data.courses, 8)).toEqual(data.result);
 });
 
 test('check mix gamma', () => {
-  const data = randomGenerate(15, 14, true);
+  const data = ruledGenerate(15, 14, true);
   expect(brute(data.courses, 14)).toEqual(data.result);
 });
 
