@@ -1,58 +1,58 @@
 name: Coverage
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
 
 jobs:
-    update-coverage-on-readme:
-        name: Update Coverage on Readme
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: NPM Cache
-              id: npm-cache
-              uses: actions/cache@v2
-              with:
-                  path: '**/node_modules'
-                  key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-npm
-            - name: Install Dependencies
-              if: steps.npm-cache.outputs.cache-hit != 'true'
-              run: npm ci
-            - name: Run Tests
-              run: npm run test | tee ./coverage.txt
-            - name: Jest coverage comment
-              id: coverageComment
-              uses: MishaKav/jest-coverage-comment@main
-              with:
-                  hide-comment: true
-                  coverage-path: ./coverage.txt
-                  junitxml-path: ./coverage/junit.xml
-            - name: Check the output coverage
-              run: |
-                  echo "Summary Report"
-                  echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
-                  echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
-                  echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
-                  echo "Coverage Report"
-                  echo "lines - ${{ steps.coverageComment.outputs.lines }}"
-                  echo "branches - ${{ steps.coverageComment.outputs.branches }}"
-                  echo "functions - ${{ steps.coverageComment.outputs.functions }}"
-                  echo "statements - ${{ steps.coverageComment.outputs.statements }}"
-                  echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
-                  echo "color - ${{ steps.coverageComment.outputs.color }}"
-                  echo "Coverage Html - ${{ steps.coverageComment.outputs.coverageHtml }}"
-            - name: Create the Badge
-              if: ${{ github.ref == 'refs/heads/main' }}
-              uses: schneegans/dynamic-badges-action@v1.0.0
-              with:
-                  auth: ${{ secrets.JEST_COVERAGE_COMMENT }}
-                  gistID: cebb88f45886d29a0972f2dd0967f9c8
-                  filename: jest-coverage-comment__main.json
-                  label: coverage
-                  message: ${{ steps.coverageComment.outputs.coverage }}%
-                  color: ${{ steps.coverageComment.outputs.color }}
-                  namedLogo: javascript
+  update-coverage-on-readme:
+    name: Update Coverage on Readme
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: NPM Cache
+        id: npm-cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm
+      - name: Install Dependencies
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+      - name: Run Tests
+        run: npm run test | tee ./coverage.txt
+      - name: Jest coverage comment
+        id: coverageComment
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          hide-comment: true
+          coverage-path: ./coverage.txt
+          junitxml-path: ./coverage/junit.xml
+      - name: Check the output coverage
+        run: |
+          echo "Summary Report"
+          echo "Coverage Percantage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "Coverage Color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Summary Html - ${{ steps.coverageComment.outputs.summaryHtml }}"
+          echo "Coverage Report"
+          echo "lines - ${{ steps.coverageComment.outputs.lines }}"
+          echo "branches - ${{ steps.coverageComment.outputs.branches }}"
+          echo "functions - ${{ steps.coverageComment.outputs.functions }}"
+          echo "statements - ${{ steps.coverageComment.outputs.statements }}"
+          echo "coverage - ${{ steps.coverageComment.outputs.coverage }}"
+          echo "color - ${{ steps.coverageComment.outputs.color }}"
+          echo "Coverage Html - ${{ steps.coverageComment.outputs.coverageHtml }}"
+      - name: Create the Badge
+        if: ${{ github.ref == 'refs/heads/main' }}
+        uses: schneegans/dynamic-badges-action@v1.0.0
+        with:
+          auth: ${{ secrets.JEST_COVERAGE_COMMENT }}
+          gistID: cebb88f45886d29a0972f2dd0967f9c8
+          filename: jest-coverage-comment__main.json
+          label: coverage
+          message: ${{ steps.coverageComment.outputs.coverage }}%
+          color: ${{ steps.coverageComment.outputs.color }}
+          namedLogo: javascript
