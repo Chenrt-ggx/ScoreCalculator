@@ -2,14 +2,10 @@ import preHandle from './common';
 
 function check(select, info, value, count) {
   const buf = info.selectable
-    .map((item, index) => {
-      return {
-        name: item['name'],
-        index: index,
-        value: item['score'] * item['credits'] - value * item['credits']
-      };
+    .map((item) => {
+      return { name: item['name'], value: item['score'] * item['credits'] - value * item['credits'] };
     })
-    .sort((lhs, rhs) => (lhs.value === rhs.value ? lhs.index - rhs.index : rhs.value - lhs.value))
+    .sort((lhs, rhs) => rhs.value - lhs.value)
     .slice(0, count);
   if (buf.reduce((now, next) => now + next.value, info.scoreSum - value * info.credits) > 0) {
     select.clear();
@@ -28,7 +24,7 @@ export default function (courses, selectNumber) {
     const selected = new Set();
     let left = 60,
       right = 100;
-    while (right - left > 1e-8) {
+    while (right - left > 1e-4) {
       const mid = (left + right) / 2;
       if (check(selected, info, mid, selectNumber)) left = mid;
       else right = mid;
