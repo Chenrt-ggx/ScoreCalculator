@@ -1,15 +1,32 @@
 import preHandle from './common';
+import { findKth } from './algorithm';
 
 function check(select, info, value, count) {
-  const buf = info.selectable
-    .map((item) => {
-      return { name: item['name'], value: item['score'] * item['credits'] - value * item['credits'] };
-    })
-    .sort((lhs, rhs) => rhs.value - lhs.value)
-    .slice(0, count);
-  if (buf.reduce((now, next) => now + next.value, info.scoreSum - value * info.credits) > 0) {
+  const buf = info.selectable.map((item) => {
+    return { name: item['name'], value: item['score'] * item['credits'] - value * item['credits'] };
+  });
+  let selected = [];
+  let result = info.scoreSum - value * info.credits;
+  if (count !== 0) {
+    const kth = findKth(buf, count, (lhs, rhs) => rhs.value - lhs.value);
+    buf
+      .filter((i) => i.value > kth.value)
+      .forEach((i) => {
+        selected.push(i['name']);
+        result += i.value;
+      });
+    buf
+      .filter((i) => i.value === kth.value)
+      .forEach((i) => {
+        if (selected.length < count) {
+          selected.push(i['name']);
+          result += i.value;
+        }
+      });
+  }
+  if (result > 0) {
     select.clear();
-    buf.forEach((item) => select.add(item['name']));
+    selected.forEach((item) => select.add(item));
     return true;
   } else {
     return false;
