@@ -74,7 +74,7 @@ test('check mix gamma', () => {
   expect(greedy(data.courses, 14)).toEqual(data.result);
 });
 
-test('check additional', () => {
+test('check additional alpha', () => {
   const data = handmadeAlpha();
   expect(greedy(data.courses, 5)).toEqual(data.result);
 });
