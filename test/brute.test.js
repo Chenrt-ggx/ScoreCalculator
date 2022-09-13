@@ -36,7 +36,7 @@ test('check equal not empty', () => {
 
 test('check plain zero', () => {
   const data = ruledGenerate(15, 0, false);
-  expect(brute(data.courses)).toEqual(data.result);
+  expect(brute(data.courses, 0)).toEqual(data.result);
 });
 
 test('check plain alpha', () => {

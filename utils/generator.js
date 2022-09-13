@@ -99,13 +99,13 @@ export function greedyHack() {
   return { courses, result, greedy };
 }
 
-export function randomGenerate(courseCount, optionalRatio) {
+export function randomGenerate(courseCount, optionalRatio, minScore, maxScore) {
   return Array(courseCount * optionalRatio)
     .fill(1)
     .map((item, index) => {
       return {
         name: 'course ' + (item + index),
-        score: randInteger(85, 100),
+        score: randInteger(minScore, maxScore),
         credits: randCredits(),
         optional: (item + index) % optionalRatio === 0
       };
