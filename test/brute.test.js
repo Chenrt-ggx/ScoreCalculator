@@ -1,5 +1,5 @@
 import brute from '../src/brute';
-import { simpleGenerate, ruledGenerate, handmadeAlpha, handmadeBeta } from '../utils/generator';
+import { simpleGenerate, ruledGenerate, handmadeAlpha, handmadeBeta, greedyHack } from '../utils/generator';
 
 test('check exception empty alpha', () => {
   expect(() => {
@@ -75,11 +75,16 @@ test('check mix gamma', () => {
 });
 
 test('check additional', () => {
-  const data = handmadeAlpha(15, 14, true);
+  const data = handmadeAlpha();
   expect(brute(data.courses, 5)).toEqual(data.result);
 });
 
 test('check additional beta', () => {
-  const data = handmadeBeta(15, 14, true);
+  const data = handmadeBeta();
   expect(brute(data.courses, 5)).toEqual(data.result);
+});
+
+test('check additional gamma', () => {
+  const data = greedyHack();
+  expect(brute(data.courses, 3)).toEqual(data.result);
 });

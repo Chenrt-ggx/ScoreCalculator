@@ -1,6 +1,5 @@
-import brute from '../src/brute';
 import greedy from '../src/greedy';
-import { simpleGenerate, ruledGenerate, handmadeAlpha, handmadeBeta, randomGenerate } from '../utils/generator';
+import { simpleGenerate, ruledGenerate, handmadeAlpha, handmadeBeta, greedyHack } from '../utils/generator';
 
 test('check exception empty alpha', () => {
   expect(() => {
@@ -76,131 +75,16 @@ test('check mix gamma', () => {
 });
 
 test('check additional', () => {
-  const data = handmadeAlpha(15, 14, true);
+  const data = handmadeAlpha();
   expect(greedy(data.courses, 5)).toEqual(data.result);
 });
 
 test('check additional beta', () => {
-  const data = handmadeBeta(15, 14, true);
+  const data = handmadeBeta();
   expect(greedy(data.courses, 5)).toEqual(data.result);
 });
 
-test('check random group A alpha', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group A beta', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group A gamma', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group B alpha', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group B beta', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group B gamma', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group B omega', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group C alpha', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
-});
-
-test('check random group C beta', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
-});
-
-test('check random group C gamma', () => {
-  const data = randomGenerate(15, false);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
-});
-
-test('check random group D alpha', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group D beta', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group D gamma', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 5);
-  expect(greedy(data, 5)).toEqual(std);
-});
-
-test('check random group E alpha', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group E beta', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group E gamma', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group E omega', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 9);
-  expect(greedy(data, 9)).toEqual(std);
-});
-
-test('check random group F alpha', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
-});
-
-test('check random group F beta', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
-});
-
-test('check random group F gamma', () => {
-  const data = randomGenerate(15, true);
-  const std = brute(data, 14);
-  expect(greedy(data, 14)).toEqual(std);
+test('check additional gamma', () => {
+  const data = greedyHack();
+  expect(greedy(data.courses, 3)).toEqual(data.greedy);
 });

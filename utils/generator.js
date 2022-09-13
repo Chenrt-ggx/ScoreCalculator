@@ -1,4 +1,4 @@
-import { randCredits, randScore } from './random';
+import { randCredits, randInteger } from './random';
 
 export function simpleGenerate(courseCount, selectCount) {
   const courses = Array(courseCount)
@@ -6,16 +6,13 @@ export function simpleGenerate(courseCount, selectCount) {
     .map((item, index) => {
       return {
         name: 'course ' + (item + index),
-        score: randScore(),
+        score: randInteger(60, 100),
         credits: randCredits(),
         optional: index >= courseCount - selectCount
       };
     });
   const result = courses.map((item) => {
-    return {
-      ...item,
-      selected: true
-    };
+    return { ...item, selected: true };
   });
   return { courses, result };
 }
@@ -26,7 +23,7 @@ export function ruledGenerate(courseCount, selectCount, includeMix) {
     .map((item, index) => {
       return {
         name: 'course ' + (item + index),
-        score: randScore(),
+        score: randInteger(60, 100),
         credits: 2,
         optional: !includeMix || (index & 1) !== 0
       };
@@ -35,10 +32,7 @@ export function ruledGenerate(courseCount, selectCount, includeMix) {
     courses
       .filter((i) => i['optional'])
       .map((item, index) => {
-        return {
-          ...item,
-          index: index
-        };
+        return { ...item, index: index };
       })
       .sort((lhs, rhs) => {
         if (rhs['score'] === lhs['score']) {
@@ -51,10 +45,7 @@ export function ruledGenerate(courseCount, selectCount, includeMix) {
       .map((i) => i['name'])
   );
   const result = courses.map((item) => {
-    return {
-      ...item,
-      selected: !item['optional'] || checker.has(item['name'])
-    };
+    return { ...item, selected: !item['optional'] || checker.has(item['name']) };
   });
   return { courses, result };
 }
@@ -70,10 +61,7 @@ export function handmadeAlpha() {
     { name: 'course 7', score: 99, credits: 1, optional: true }
   ];
   const result = courses.map((item) => {
-    return {
-      ...item,
-      selected: !item['optional'] || item['score'] !== 99
-    };
+    return { ...item, selected: !item['optional'] || item['score'] !== 99 };
   });
   return { courses, result };
 }
@@ -90,23 +78,36 @@ export function handmadeBeta() {
     { name: 'course 8', score: 82, credits: 1.5, optional: true }
   ];
   const result = courses.map((item) => {
-    return {
-      ...item,
-      selected: !item['optional'] || item['score'] !== 82
-    };
+    return { ...item, selected: !item['optional'] || item['score'] !== 82 };
   });
   return { courses, result };
 }
 
-export function randomGenerate(courseCount, includeMix) {
-  return Array(includeMix ? courseCount * 2 : courseCount)
+export function greedyHack() {
+  const courses = [
+    { name: 'course 1', score: 85, credits: 7, optional: true },
+    { name: 'course 2', score: 73, credits: 1, optional: true },
+    { name: 'course 3', score: 63, credits: 0.5, optional: true },
+    { name: 'course 4', score: 73, credits: 1, optional: true }
+  ];
+  const result = courses.map((item) => {
+    return { ...item, selected: item['score'] !== 63 };
+  });
+  const greedy = courses.map((item, index) => {
+    return { ...item, selected: index !== courses.length - 1 };
+  });
+  return { courses, result, greedy };
+}
+
+export function randomGenerate(courseCount, optionalRatio) {
+  return Array(courseCount * optionalRatio)
     .fill(1)
     .map((item, index) => {
       return {
         name: 'course ' + (item + index),
-        score: randScore(),
+        score: randInteger(85, 100),
         credits: randCredits(),
-        optional: !includeMix || (index & 1) !== 0
+        optional: (item + index) % optionalRatio === 0
       };
     });
 }
