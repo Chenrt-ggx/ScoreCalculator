@@ -4,8 +4,10 @@
 ![license](https://img.shields.io/github/license/Chenrt-ggx/ScoreCalculator)
 ![version](https://img.shields.io/github/package-json/v/Chenrt-ggx/ScoreCalculator)
 
-Score Calculator and General Professional Course Selector for BUAA Computer Science. For more,
-see [this blog](https://www.cnblogs.com/Chenrt/p/16675891.html).
+Score Calculator and General Professional Course Selector for BUAA Computer Science.
+
+- For frontend, see [this page](https://chenrt-ggx.github.io/ScoreFrontend).
+- For more, see [this blog](https://www.cnblogs.com/Chenrt/p/16675891.html).
 
 ## Project setup
 
