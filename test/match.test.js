@@ -4,16 +4,14 @@ import greedy from '../src/greedy';
 import binary from '../src/binary';
 import { randomGenerate } from '../utils/generator';
 
-function calculateSelected(buf) {
-  return buf.filter((i) => i['selected']).length;
-}
+const calculateSelected = (buf) => buf.filter((i) => i.selected).length;
 
-function calculateScore(buf) {
-  const fixed = buf.filter((i) => i['selected']);
-  const creditsSum = fixed.reduce((now, next) => now + next['credits'], 0);
-  const scoreSum = fixed.reduce((now, next) => now + next['score'] * next['credits'], 0);
+const calculateScore = (buf) => {
+  const fixed = buf.filter((i) => i.selected);
+  const creditsSum = fixed.reduce((now, next) => now + next.credits, 0);
+  const scoreSum = fixed.reduce((now, next) => now + next.score * next.credits, 0);
   return scoreSum / creditsSum;
-}
+};
 
 for (let i = 0; i < 100; ++i) {
   test('random brute greedy test ' + i, () => {

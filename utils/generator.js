@@ -30,22 +30,22 @@ export const ruledGenerate = (courseCount, selectCount, includeMix) => {
     });
   const checker = new Set(
     courses
-      .filter((i) => i['optional'])
+      .filter((i) => i.optional)
       .map((item, index) => {
         return { ...item, index: index };
       })
       .sort((lhs, rhs) => {
-        if (rhs['score'] === lhs['score']) {
-          return lhs['index'] - rhs['index'];
+        if (rhs.score === lhs.score) {
+          return lhs.index - rhs.index;
         } else {
-          return rhs['score'] - lhs['score'];
+          return rhs.score - lhs.score;
         }
       })
       .slice(0, selectCount)
-      .map((i) => i['name'])
+      .map((i) => i.name)
   );
   const result = courses.map((item) => {
-    return { ...item, selected: !item['optional'] || checker.has(item['name']) };
+    return { ...item, selected: !item.optional || checker.has(item.name) };
   });
   return { courses, result };
 };
@@ -61,7 +61,7 @@ export const handmadeAlpha = () => {
     { name: 'course 7', score: 99, credits: 1, optional: true }
   ];
   const result = courses.map((item) => {
-    return { ...item, selected: !item['optional'] || item['score'] !== 99 };
+    return { ...item, selected: !item.optional || item.score !== 99 };
   });
   return { courses, result };
 };
@@ -78,7 +78,7 @@ export const handmadeBeta = () => {
     { name: 'course 8', score: 82, credits: 1.5, optional: true }
   ];
   const result = courses.map((item) => {
-    return { ...item, selected: !item['optional'] || item['score'] !== 82 };
+    return { ...item, selected: !item.optional || item.score !== 82 };
   });
   return { courses, result };
 };
@@ -91,7 +91,7 @@ export const greedyHack = () => {
     { name: 'course 4', score: 73, credits: 1, optional: true }
   ];
   const result = courses.map((item) => {
-    return { ...item, selected: item['score'] !== 63 };
+    return { ...item, selected: item.score !== 63 };
   });
   const greedy = courses.map((item, index) => {
     return { ...item, selected: index !== courses.length - 1 };
