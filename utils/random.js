@@ -1,11 +1,5 @@
-const creditsPool = Array(9)
-  .fill(1)
-  .map((item, index) => (item + index) / 2);
+const creditsPool = [...Array(9).keys()].map((i) => (i + 1) / 2);
 
-export function randInteger(min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+export const randInteger = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
-export function randCredits() {
-  return creditsPool[randInteger(0, creditsPool.length - 1)];
-}
+export const randCredits = () => creditsPool[randInteger(0, creditsPool.length - 1)];
